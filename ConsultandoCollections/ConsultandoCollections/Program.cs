@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsultandoCollections
 {
@@ -26,21 +27,38 @@ namespace ConsultandoCollections
                 new Mes("Dezembro   ", 31)
             };
 
-            meses.Sort();
+            //meses.Sort();
 
-            foreach (var mes in meses)
+            //foreach (var mes in meses)
+            //{
+            //    if (mes.Dias == 31)
+            //    {
+            //        Console.WriteLine(mes.Nome.ToUpper());
+            //    }
+            //}
+
+            // LINQ = CONSULTA INTEGRADA À LINGUAGEM
+
+            // Montagem da consulta
+
+            IEnumerable<Mes> consulta = meses.Where(m => m.Dias == 31);
+
+            IOrderedEnumerable<Mes> mesesOrdenadosPeloNome = consulta.OrderBy(m => m.Nome);
+
+            IEnumerable<string> mesesEmUppercase = mesesOrdenadosPeloNome.Select(m => m.Nome.ToUpper());
+
+            // Utilização da consulta
+
+            foreach (var item in mesesEmUppercase)
             {
-                if (mes.Dias == 31)
-                {
-                    Console.WriteLine(mes.Nome.ToUpper());
-                }
+                Console.WriteLine(item);
             }
 
             Console.ReadLine();
         }
     }
 
-    class Mes : IComparable
+    class Mes /* : IComparable*/
     {
         public Mes(string nome, int dias)
         {
@@ -51,12 +69,12 @@ namespace ConsultandoCollections
         public string Nome { get; private set; }
         public int Dias { get; private set; }
 
-        public int CompareTo(object obj)
-        {
-            Mes outro = obj as Mes;
+        //public int CompareTo(object obj)
+        //{
+        //    Mes outro = obj as Mes;
 
-            return Nome.CompareTo(outro.Nome);
-        }
+        //    return Nome.CompareTo(outro.Nome);
+        //}
 
         public override string ToString()
         {
